@@ -1,14 +1,18 @@
-package edu.epam.book.main;
+package edu.epam.book.service;
 
 import edu.epam.book.entity.Book;
-import edu.epam.book.report.BookReport;
-import edu.epam.book.service.BookService;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class Main {
+import static org.testng.Assert.*;
 
-    public static void main(String[] args) {
+public class BookServiceTest {
+
+    @Test
+    public void filterAuthor(){
         String[] authorsBook1 = {"J.K. Rowling"};
         Book book1 = new Book("Harry Potter and chamber of secrets", authorsBook1, "Rosman", 2012, 256, 406, "limp");
         String[] authorBook2 = {"J.K. Rowling"};
@@ -16,15 +20,12 @@ public class Main {
         String[] authorBook3 = {"Johnny Ball", "Richard Hammond", "J.K. Rowling"};
         Book book3 = new Book("Cursed child", authorBook3, "Reader's Digest", 2008, 288, 198, "hard");
         Book[] books = {book1, book2,book3};
+        List<Book> bookList = new ArrayList<>();
+        bookList.add(book2);
+        bookList.add(book3);
         BookService service = new BookService();
-        List<Book> listByAuthor =  service.listByAuthor("Robert Winston", books);
-        List<Book> listByPublisher =  service.booksByPublisher("Robert Winston", books);
-        List<Book> ListBookAfterYear = service.booksAfterYear(2009, books);
-        BookReport report = new BookReport();
-        report.printReport("Filtered by author",listByAuthor);
-        report.printReport("Filtered by publisher",listByPublisher);
-        report.printReport("Filtered by year",ListBookAfterYear);
-
+        List<Book> list = service.listByAuthor("Robert Winston", books);
+        Assert.assertEquals(bookList.toString(),list.toString());
     }
 
 }
